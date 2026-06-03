@@ -1,0 +1,146 @@
+@implements IDisposable
+
+@if (IsLoading)
+{
+    <VoltLoading Message="@L10n["CoachDashboard.Loading"]" />
+}
+else if (ApiUnavailable)
+{
+    <VoltEmptyState Title="@L10n["CoachDashboard.ApiUnavailable"]"
+                    Description="@L10n["CoachDashboard.ApiUnavailableHint"]"
+                    Icon="@Icons.Material.Filled.CloudOff" />
+}
+else if (Dashboard is null)
+{
+    <VoltEmptyState Title="@L10n["CoachDashboard.Empty"]"
+                    Description="@L10n["CoachDashboard.EmptyHint"]"
+                    Icon="@Icons.Material.Filled.Groups" />
+}
+else
+{
+    <MudStack Spacing="3">
+        <MudGrid Spacing="2">
+            <MudItem xs="4">
+                <div class="volt-kpi-clickable" @onclick="() => NavigateAthletes(null)">
+                    <VoltStatCard Label="@L10n["CoachDashboard.Kpi.Total"]"
+                                  Value="@L10n.FormatNumber(Dashboard.TotalAthletes, 0)"
+                                  Icon="@Icons.Material.Filled.Groups" />
+                </div>
+            </MudItem>
+            <MudItem xs="4">
+                <div class="volt-kpi-clickable" @onclick='() => NavigateAthletes("Active")'>
+                    <VoltStatCard Label="@L10n["CoachDashboard.Kpi.Active"]"
+                                  Value="@L10n.FormatNumber(Dashboard.ActiveAthletes, 0)"
+                                  Icon="@Icons.Material.Filled.CheckCircle" />
+                </div>
+            </MudItem>
+            <MudItem xs="4">
+                <div class="volt-kpi-clickable" @onclick='() => NavigateAthletes("Inactive")'>
+                    <VoltStatCard Label="@L10n["CoachDashboard.Kpi.Inactive"]"
+                                  Value="@L10n.FormatNumber(Dashboard.InactiveOrOnHoldAthletes, 0)"
+                                  Icon="@Icons.Material.Filled.PauseCircle" />
+                </div>
+            </MudItem>
+        </MudGrid>
+
+        <VoltSectionHeader Title="@L10n["CoachDashboard.QuickActions"]" />
+        <MudStack Row="true" Spacing="2" Class="volt-quick-actions">
+            <VoltButton Variant="Variant.Filled" OnClick="@(() => Navigation.NavigateTo("/athletes/add"))">
+                <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-1" Size="Size.Small" /> @L10n["CoachDashboard.AddAthlete"]
+            </VoltButton>
+            <VoltButton Variant="Variant.Outlined" OnClick="@(() => Navigation.NavigateTo("/programs/new"))">
+                <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Class="mr-1" Size="Size.Small" /> @L10n["CoachDashboard.NewProgram"]
+            </VoltButton>
+            <VoltButton Variant="Variant.Outlined" OnClick="@(() => Navigation.NavigateTo("/measurements/log"))">
+                <MudIcon Icon="@Icons.Material.Filled.Straighten" Class="mr-1" Size="Size.Small" /> @L10n["CoachDashboard.LogMeasurement"]
+            </VoltButton>
+        </MudStack>
+
+        <MudGrid Spacing="2">
+            <MudItem xs="6">
+                <VoltCard Title="@L10n["CoachDashboard.NeedsProgram"]" CssClass="volt-alert-card">
+                    <MudText Typo="Typo.h4" Color="Color.Warning">@L10n.FormatNumber(Dashboard.NeedsNewProgramCount, 0)</MudText>
+                </VoltCard>
+            </MudItem>
+            <MudItem xs="6">
+                <VoltCard Title="@L10n["CoachDashboard.NoWorkout"]" CssClass="volt-alert-card">
+                    <MudText Typo="Typo.h4" Color="Color.Error">@L10n.FormatNumber(Dashboard.NoWorkout7DaysCount, 0)</MudText>
+                </VoltCard>
+            </MudItem>
+        </MudGrid>
+
+        @if (Dashboard.AttentionItems.Count > 0)
+        {
+            <VoltSectionHeader Title="@L10n["CoachDashboard.Attention"]" />
+            <MudStack Spacing="2">
+                @foreach (var alert in Dashboard.AttentionItems.Take(8))
+                {
+                    <MudPaper Class="volt-attention-row" @onclick="() => NavigateAthlete(alert.AthleteId)">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            <VoltAvatar Initials="@GetInitials(alert)" ImageUrl="@alert.ProfilePhotoUrl" Size="Size.Medium" />
+                            <MudStack Spacing="0" Style="flex:1">
+                                <MudText Typo="Typo.subtitle2">@GetAthleteName(alert)</MudText>
+                                <MudText Typo="Typo.caption" Class="volt-text-muted">@GetAlertMessage(alert)</MudText>
+                            </MudStack>
+                            <MudChip T="string" Size="Size.Small" Color="@GetSeverityColor(alert.Severity)">
+                                @GetAlertTypeLabel(alert.AlertType)
+                            </MudChip>
+                        </MudStack>
+                    </MudPaper>
+                }
+            </MudStack>
+        }
+
+        @if (Dashboard.ProgramsExpiring.Count > 0)
+        {
+            <VoltSectionHeader Title="@L10n["CoachDashboard.ExpiringPrograms"]" />
+            <MudStack Spacing="2">
+                @foreach (var program in Dashboard.ProgramsExpiring)
+                {
+                    <MudPaper Class="volt-expiring-row" @onclick="() => NavigateAthlete(program.AthleteId)">
+                        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.subtitle2">@GetProgramAthleteName(program)</MudText>
+                                <MudText Typo="Typo.caption" Class="volt-text-muted">@GetProgramName(program)</MudText>
+                            </MudStack>
+                            <MudChip T="string" Size="Size.Small" Color="@(program.IsExpired ? Color.Error : Color.Warning)">
+                                @(program.IsExpired ? L10n["CoachDashboard.Expired"] : L10n.FormatNumber(program.DaysRemaining, 0) + " " + L10n["CoachDashboard.DaysLeft"])
+                            </MudChip>
+                        </MudStack>
+                        <MudProgressLinear Value="@GetProgramProgress(program)" Color="@(program.IsExpired ? Color.Error : Color.Primary)" Class="mt-2" />
+                    </MudPaper>
+                }
+            </MudStack>
+        }
+
+        @if (Dashboard.RecentMeasurements.Count > 0)
+        {
+            <VoltSectionHeader Title="@L10n["CoachDashboard.RecentMeasurements"]" />
+            <div class="volt-horizontal-strip">
+                @foreach (var m in Dashboard.RecentMeasurements)
+                {
+                    <MudPaper Class="volt-strip-item" @onclick="() => NavigateAthlete(m.AthleteId)">
+                        <MudText Typo="Typo.caption" Class="volt-text-muted">@(L10n.IsRtl ? m.AthleteNameFa : m.AthleteNameEn)</MudText>
+                        <MudText Typo="Typo.subtitle1">@(m.Weight.HasValue ? L10n.FormatNumber(m.Weight.Value) + " kg" : "—")</MudText>
+                        <MudText Typo="Typo.caption">@FormatDate(m.MeasurementDate)</MudText>
+                    </MudPaper>
+                }
+            </div>
+        }
+
+        @if (Dashboard.RecentProgressPhotos.Count > 0)
+        {
+            <VoltSectionHeader Title="@L10n["CoachDashboard.RecentPhotos"]" />
+            <div class="volt-horizontal-strip">
+                @foreach (var photo in Dashboard.RecentProgressPhotos)
+                {
+                    <MudPaper Class="volt-strip-item volt-photo-strip" @onclick="() => NavigateAthlete(photo.AthleteId)">
+                        <MudAvatar Size="Size.Large" Style="@($"background-image:url('{photo.PhotoUrl}');background-size:cover;")" />
+                        <MudText Typo="Typo.caption" Class="mt-1">@(L10n.IsRtl ? photo.AthleteNameFa : photo.AthleteNameEn)</MudText>
+                        <MudText Typo="Typo.caption" Class="volt-text-muted">@FormatDate(photo.Date)</MudText>
+                    </MudPaper>
+                }
+            </div>
+        }
+    </MudStack>
+}

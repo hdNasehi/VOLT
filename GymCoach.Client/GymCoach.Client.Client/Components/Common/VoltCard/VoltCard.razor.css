@@ -1,0 +1,4 @@
+.volt-card {
+    border-radius: var(--volt-radius-md);
+    background: var(--volt-color-surface-elevated);
+}

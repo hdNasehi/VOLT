@@ -1,0 +1,52 @@
+.volt-kpi-clickable {
+    cursor: pointer;
+}
+
+.volt-quick-actions {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+}
+
+.volt-alert-card {
+    text-align: center;
+}
+
+.volt-attention-row,
+.volt-expiring-row {
+    padding: 12px 16px;
+    border-radius: var(--volt-radius-md, 12px);
+    background: var(--volt-surface, #16181D);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.volt-attention-row:hover,
+.volt-expiring-row:hover {
+    background: var(--volt-surface-elevated, #1e2128);
+}
+
+.volt-horizontal-strip {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.volt-strip-item {
+    min-width: 120px;
+    padding: 12px;
+    border-radius: var(--volt-radius-md, 12px);
+    background: var(--volt-surface, #16181D);
+    scroll-snap-align: start;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.volt-photo-strip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+}

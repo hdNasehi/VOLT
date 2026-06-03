@@ -1,0 +1,4 @@
+.volt-button {
+    border-radius: var(--volt-radius-sm);
+    min-height: 2.75rem;
+}

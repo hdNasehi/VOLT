@@ -1,0 +1,17 @@
+.volt-stack-sm { display: flex; flex-direction: column; gap: var(--volt-space-sm); }
+.volt-stack-md { display: flex; flex-direction: column; gap: var(--volt-space-md); }
+.volt-full-width { width: 100%; }
+.volt-text-muted {
+  color: var(--text-2);
+}
+
+.volt-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

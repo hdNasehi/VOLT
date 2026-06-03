@@ -1,0 +1,27 @@
+@if (IsLoading)
+{
+    <VoltLoading Message="Loading dashboard..." />
+}
+else if (ApiUnavailable)
+{
+    <VoltEmptyState Title="API not reachable"
+                    Description="Start GymCoach.Api (https://localhost:7219) or use the 'Api + Client' launch profile in Visual Studio."
+                    Icon="@Icons.Material.Filled.CloudOff" />
+}
+else if (AthleteCount == 0)
+{
+    <VoltEmptyState Title="No athletes yet"
+                    Description="Add athletes to see dashboard insights."
+                    Icon="@Icons.Material.Filled.DirectionsRun" />
+}
+else
+{
+    <MudGrid Spacing="2">
+        <MudItem xs="12" sm="6">
+            <VoltStatCard Label="Athletes" Value="@AthleteCount.ToString()" Icon="@Icons.Material.Filled.Groups" />
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <VoltStatCard Label="Active plans" Value="@ActivePlanCount.ToString()" Icon="@Icons.Material.Filled.CalendarMonth" />
+        </MudItem>
+    </MudGrid>
+}

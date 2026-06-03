@@ -1,0 +1,10 @@
+<MudAvatar Class="@($"volt-avatar {CssClass}")" Size="@Size" Color="@Color" aria-label="@AriaLabel">
+    @if (!string.IsNullOrWhiteSpace(ImageUrl))
+    {
+        <MudImage Src="@ImageUrl" Alt="@AltText" />
+    }
+    else
+    {
+        @Initials
+    }
+</MudAvatar>

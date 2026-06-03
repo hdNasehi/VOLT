@@ -1,0 +1,19 @@
+<MudCard Class="@($"volt-card {CssClass}")" Elevation="@Elevation" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@Title</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+    }
+    <MudCardContent>
+        @ChildContent
+    </MudCardContent>
+    @if (Actions is not null)
+    {
+        <MudCardActions>
+            @Actions
+        </MudCardActions>
+    }
+</MudCard>

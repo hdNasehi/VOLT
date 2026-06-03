@@ -1,0 +1,7 @@
+<MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="@($"volt-section-header {CssClass}")">
+    <MudText Typo="Typo.h6">@Title</MudText>
+    @if (Actions is not null)
+    {
+        @Actions
+    }
+</MudStack>

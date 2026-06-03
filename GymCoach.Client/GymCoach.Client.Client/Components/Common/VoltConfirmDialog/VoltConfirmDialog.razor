@@ -1,0 +1,12 @@
+<MudDialog Class="volt-confirm-dialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>@Message</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" aria-label="Cancel">@CancelText</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Confirm" aria-label="Confirm">@ConfirmText</MudButton>
+    </DialogActions>
+</MudDialog>

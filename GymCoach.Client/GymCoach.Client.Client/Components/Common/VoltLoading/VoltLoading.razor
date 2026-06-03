@@ -1,0 +1,7 @@
+<div class="volt-loading @CssClass" role="status" aria-live="polite" aria-label="@AriaLabel">
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="@Size" />
+    @if (!string.IsNullOrWhiteSpace(Message))
+    {
+        <MudText Typo="Typo.body2" Class="volt-text-muted">@Message</MudText>
+    }
+</div>

@@ -1,0 +1,13 @@
+<VoltCard Title="@Label" CssClass="volt-stat-card">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+        <MudText Typo="Typo.h4">@Value</MudText>
+        @if (!string.IsNullOrWhiteSpace(Icon))
+        {
+            <MudIcon Icon="@Icon" Color="Color.Primary" />
+        }
+    </MudStack>
+    @if (!string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <MudText Typo="Typo.caption" Class="volt-text-muted">@Subtitle</MudText>
+    }
+</VoltCard>

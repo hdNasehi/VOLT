@@ -1,0 +1,14 @@
+.volt-logo-mark {
+    color: var(--lime);
+    font-size: 1.25rem;
+}
+
+.volt-logo-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.volt-lang-active {
+    border-color: var(--lime) !important;
+    color: var(--lime) !important;
+}

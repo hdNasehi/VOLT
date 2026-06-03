@@ -1,0 +1,11 @@
+[dir="rtl"] .volt-topbar {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .volt-bottom-nav {
+  direction: rtl;
+}
+
+[dir="rtl"] .mud-icon-root.mud-flip-rtl {
+  transform: scaleX(-1);
+}

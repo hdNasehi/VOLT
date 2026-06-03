@@ -1,0 +1,26 @@
+@if (_isLoading)
+{
+    <VoltLoading />
+}
+else if (_athletes.Count == 0)
+{
+    <VoltEmptyState Title="No athletes" Description="Athletes from the API will appear here." Icon="@Icons.Material.Filled.PersonOff" />
+}
+else
+{
+    <VoltSearchBar Placeholder="Search athletes..." OnSearch="FilterAthletes" CssClass="volt-full-width" />
+    <MudList T="string" Class="volt-stack-md">
+        @foreach (var athlete in _filtered)
+        {
+            <MudListItem OnClick="@(() => SelectAthlete(athlete.Id))">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                    <VoltAvatar Initials="@GetInitials(athlete.FullName)" AriaLabel="@athlete.FullName" />
+                    <MudStack Spacing="0">
+                        <MudText>@athlete.FullName</MudText>
+                        <MudText Typo="Typo.caption" Class="volt-text-muted">@athlete.Email</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudListItem>
+        }
+    </MudList>
+}

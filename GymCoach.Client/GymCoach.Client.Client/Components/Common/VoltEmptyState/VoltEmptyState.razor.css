@@ -1,0 +1,9 @@
+.volt-empty-state {
+    text-align: center;
+    padding: var(--volt-space-xl);
+    background: transparent;
+}
+
+.volt-empty-state-action {
+    margin-top: var(--volt-space-md);
+}

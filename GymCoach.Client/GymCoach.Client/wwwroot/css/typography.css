@@ -1,0 +1,43 @@
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1, h2, h3, .volt-display, .volt-stat-value {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 27px; font-weight: 700; }
+h2 { font-size: 22px; font-weight: 600; }
+h3 { font-size: 18px; font-weight: 600; }
+
+.volt-stat-value {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.volt-caption {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+[dir="rtl"] body,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  font-family: var(--font-fa);
+}
+
+.volt-numeric {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+[dir="rtl"] .volt-numeric {
+  font-family: var(--font-fa);
+}

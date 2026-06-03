@@ -1,0 +1,7 @@
+<div class="volt-progress-ring @CssClass" role="progressbar" aria-valuenow="@Value" aria-valuemin="0" aria-valuemax="100" aria-label="@AriaLabel">
+    <MudProgressCircular Value="@Value" Color="Color.Primary" Size="@Size" />
+    @if (ShowLabel)
+    {
+        <MudText Typo="Typo.caption" Class="volt-progress-label">@($"{Value:0}%")</MudText>
+    }
+</div>

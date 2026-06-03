@@ -1,0 +1,30 @@
+@import url('variables.css');
+@import url('typography.css');
+@import url('layout.css');
+@import url('animations.css');
+@import url('utilities.css');
+@import url('rtl.css');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--volt-color-surface);
+}
+
+#blazor-error-ui {
+  background: var(--volt-color-danger);
+  color: white;
+  padding: var(--volt-space-md);
+  display: none;
+  position: fixed;
+  bottom: calc(var(--volt-safe-bottom) + var(--volt-space-md));
+  left: var(--volt-space-md);
+  right: var(--volt-space-md);
+  z-index: 1000;
+  border-radius: var(--volt-radius-md);
+}
+
+#blazor-error-ui .dismiss {
+  cursor: pointer;
+  margin-left: var(--volt-space-sm);
+}

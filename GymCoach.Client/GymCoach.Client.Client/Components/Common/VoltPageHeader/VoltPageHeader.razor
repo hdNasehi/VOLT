@@ -1,0 +1,7 @@
+<MudPaper Class="@($"volt-page-header {CssClass}")" Elevation="0">
+    <MudText Typo="Typo.h4">@Title</MudText>
+    @if (!string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <MudText Typo="Typo.body2" Class="volt-text-muted">@Subtitle</MudText>
+    }
+</MudPaper>

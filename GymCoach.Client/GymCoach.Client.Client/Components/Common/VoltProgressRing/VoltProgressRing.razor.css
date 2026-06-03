@@ -1,0 +1,10 @@
+.volt-progress-ring {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--volt-space-xs);
+}
+
+.volt-progress-label {
+    color: var(--volt-color-text-muted);
+}

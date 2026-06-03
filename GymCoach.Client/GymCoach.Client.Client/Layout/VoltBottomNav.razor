@@ -1,0 +1,24 @@
+@inject ILocalizationService L10n
+@inject NavigationManager Navigation
+
+<nav class="volt-bottom-nav" aria-label="Primary">
+  <NavLink class="volt-nav-item" href="/" Match="NavLinkMatch.All" ActiveClass="active">
+    <MudIcon Icon="@Icons.Material.Filled.Home" Size="Size.Small" />
+    <span>@L10n["Nav.Home"]</span>
+  </NavLink>
+  <NavLink class="volt-nav-item" href="/library" ActiveClass="active">
+    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" />
+    <span>@L10n["Nav.Library"]</span>
+  </NavLink>
+  <NavLink class="volt-nav-ai" href="/ai-coach" ActiveClass="active" aria-label="@L10n["Nav.AiCoach"]">
+    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" />
+  </NavLink>
+  <NavLink class="volt-nav-item" href="/progress" ActiveClass="active">
+    <MudIcon Icon="@Icons.Material.Filled.Insights" Size="Size.Small" />
+    <span>@L10n["Nav.Progress"]</span>
+  </NavLink>
+  <NavLink class="volt-nav-item" href="/profile" ActiveClass="active">
+    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" />
+    <span>@L10n["Nav.Profile"]</span>
+  </NavLink>
+</nav>

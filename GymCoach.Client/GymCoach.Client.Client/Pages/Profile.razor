@@ -1,0 +1,7 @@
+@page "/profile"
+@inject ILocalizationService L10n
+
+<VoltPageHeader Title="@L10n["Nav.Profile"]" Subtitle="Settings & account." />
+<VoltCard Title="Language">
+    <MudText Typo="Typo.body2" Class="volt-text-muted">@L10n["Lang.En"] / @L10n["Lang.Fa"] via top bar toggle.</MudText>
+</VoltCard>

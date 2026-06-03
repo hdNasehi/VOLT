@@ -1,0 +1,9 @@
+@page "/not-found"
+
+<VoltPageHeader Title="Not found" Subtitle="The page you requested does not exist." />
+<VoltButton OnClick="GoHome" Variant="Variant.Filled">Go home</VoltButton>
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    private void GoHome() => Navigation.NavigateTo("/");
+}
