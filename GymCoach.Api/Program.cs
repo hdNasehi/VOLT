@@ -9,20 +9,37 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddGymCoachDatabase(
     builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? "Server=(localdb)\\mssqllocaldb;Database=GymCoach;Trusted_Connection=True;TrustServerCertificate=True");
+    ?? "Server=localhost\\SQLEXPRESS;Database=GymCoach;Trusted_Connection=True;TrustServerCertificate=True");
 
 builder.Services.AddSingleton<ICurrentCoachProvider, ConfigCurrentCoachProvider>();
 builder.Services.AddScoped<ICoachDashboardService, CoachDashboardService>();
 builder.Services.AddScoped<IAthletePhoneService, AthletePhoneService>();
+builder.Services.AddScoped<IAthleteRosterService, AthleteRosterService>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Client", policy =>
     {
-        policy.WithOrigins(builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? ["https://localhost:7275", "http://localhost:5229"])
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        if (builder.Environment.IsDevelopment())
+        {
+            // Rider/VS may use 127.0.0.1, IIS Express ports, or alternate localhost ports.
+            policy.SetIsOriginAllowed(static origin =>
+            {
+                if (string.IsNullOrEmpty(origin) || !Uri.TryCreate(origin, UriKind.Absolute, out var uri))
+                {
+                    return false;
+                }
+
+                return uri.Host is "localhost" or "127.0.0.1";
+            });
+        }
+        else
+        {
+            policy.WithOrigins(builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? ["https://localhost:7275", "http://localhost:5229"]);
+        }
+
+        policy.AllowAnyHeader().AllowAnyMethod();
     });
 });
 
@@ -35,8 +52,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 app.UseCors("Client");
+app.UseHttpsRedirection();
 app.MapControllers();
 
 app.MapGet(ApiRoutes.Health, () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));

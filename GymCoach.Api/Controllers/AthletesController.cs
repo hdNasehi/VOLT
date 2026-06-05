@@ -10,8 +10,31 @@ namespace GymCoach.Api.Controllers;
 [Route("api/athletes")]
 public class AthletesController(
     IAthletePhoneService athletePhoneService,
+    IAthleteRosterService athleteRosterService,
     ICurrentCoachProvider coachProvider) : ControllerBase
 {
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<AthleteDto>>> GetAll(
+        [FromQuery] string? status,
+        CancellationToken cancellationToken)
+    {
+        var athletes = await athleteRosterService.GetForCoachAsync(
+            coachProvider.GetCoachId(),
+            status,
+            cancellationToken);
+        return Ok(athletes);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<AthleteDto>> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var athlete = await athleteRosterService.GetByIdForCoachAsync(
+            coachProvider.GetCoachId(),
+            id,
+            cancellationToken);
+        return athlete is null ? NotFound() : Ok(athlete);
+    }
+
     [HttpPost("check-phone")]
     public async Task<ActionResult<Result<CheckPhoneResultDto>>> CheckPhone(
         [FromBody] CheckPhoneRequest request,

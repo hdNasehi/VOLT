@@ -39,9 +39,11 @@ public sealed class AthletePhoneService(GymCoachDbContext db) : IAthletePhoneSer
             });
         }
 
-        var accountExists = athlete.UserId != null && athlete.Status != AthleteStatus.Placeholder;
+        var accountExists = athlete.UserId != null && 
+                            athlete.Status != AthleteStatus.Placeholder;
         var alreadyLinked = await db.CoachAthletes
-            .AnyAsync(ca => ca.CoachId == coachId && ca.AthleteId == athlete.Id && ca.IsActive, cancellationToken);
+            .AnyAsync(ca => ca.CoachId == coachId && ca.AthleteId == athlete.Id 
+                                                  && ca.IsActive, cancellationToken);
 
         return Result<CheckPhoneResultDto>.Success(new CheckPhoneResultDto
         {
