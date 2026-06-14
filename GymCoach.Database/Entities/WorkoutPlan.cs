@@ -11,6 +11,8 @@ public class WorkoutPlan
     public string DescriptionFa { get; set; } = string.Empty;
     public FitnessGoal Goal { get; set; }
     public int DurationWeeks { get; set; }
+    public int DaysPerWeek { get; set; } = 3;
+    public decimal Price { get; set; }
     public ProgramStatus Status { get; set; } = ProgramStatus.Active;
     public Guid AthleteId { get; set; }
     public Athlete Athlete { get; set; } = null!;

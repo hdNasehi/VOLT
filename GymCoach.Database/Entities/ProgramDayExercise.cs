@@ -10,6 +10,7 @@ public class ProgramDayExercise
     public int Sets { get; set; }
     public int Reps { get; set; }
     public int RestSeconds { get; set; }
+    public int? SupersetGroupId { get; set; }
     public string? RirRpe { get; set; }
     public string? CoachNotes { get; set; }
     public int Order { get; set; }

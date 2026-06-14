@@ -1,5 +1,4 @@
 using GymCoach.Database.Repositories;
-using GymCoach.Database.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +12,12 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString));
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IAthleteRepository, AthleteRepository>();
+        services.AddScoped<ICoachRepository, CoachRepository>();
+        services.AddScoped<IProgressRepository, ProgressRepository>();
+
         return services;
     }
 
@@ -20,7 +25,9 @@ public static class DependencyInjection
     {
         using var scope = services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<GymCoachDbContext>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole>>();
         await db.Database.MigrateAsync(cancellationToken);
-        await DatabaseSeeder.SeedAsync(db, cancellationToken);
+        await Seed.RolesSeeder.SeedAsync(roleManager, cancellationToken);
+        await Seed.DatabaseSeeder.SeedAsync(db, cancellationToken);
     }
 }

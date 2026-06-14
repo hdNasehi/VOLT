@@ -12,6 +12,7 @@ public class Measurement
     public decimal? Forearms { get; set; }
     public decimal? Thighs { get; set; }
     public decimal? Calves { get; set; }
+    public decimal? Neck { get; set; }
     public decimal? Shoulders { get; set; }
     public decimal? BodyFatPercentage { get; set; }
     public DateOnly MeasurementDate { get; set; }

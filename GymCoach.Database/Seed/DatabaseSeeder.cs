@@ -19,9 +19,11 @@ public static class DatabaseSeeder
         var coach = new Coach
         {
             Id = DefaultCoachId,
-            FirstName = "Jordan",
-            LastName = "Lee",
-            Email = "coach@volt.app"
+            FirstName = "امیر",
+            LastName = "رضایی",
+            Email = "coach@volt.app",
+            PhoneNumber = "09121000000",
+            ApprovalStatus = CoachApprovalStatus.Approved
         };
 
         var exercises = CreateSampleExercises();
@@ -60,22 +62,22 @@ public static class DatabaseSeeder
     {
         return
         [
-            CreateAthlete("11111111-1111-1111-1111-111111111111", "Alex", "Rivera", "09121234567", AthleteStatus.Active,
-                Gender.Male, FitnessGoal.Hypertrophy, 82.4m, 14.2m, "user-alex", 12),
-            CreateAthlete("22222222-2222-2222-2222-222222222222", "Sam", "Chen", "09121234568", AthleteStatus.Active,
-                Gender.Female, FitnessGoal.Strength, 68m, 18.5m, "user-sam", 5),
-            CreateAthlete("33333333-3333-3333-3333-333333333333", "Riley", "Patel", "09121234569", AthleteStatus.OnHold,
-                Gender.Other, FitnessGoal.FatLoss, 75m, 22m, "user-riley", 0),
-            CreateAthlete("44444444-4444-4444-4444-444444444444", "Morgan", "Kim", "09121234570", AthleteStatus.Inactive,
-                Gender.Female, FitnessGoal.FatLoss, 62m, 20m, "user-morgan", 0),
-            CreateAthlete("55555555-5555-5555-5555-555555555555", "Jamie", "Okafor", "09121234571", AthleteStatus.Active,
-                Gender.Male, FitnessGoal.Strength, 90m, 16m, "user-jamie", 8),
-            CreateAthlete("66666666-6666-6666-6666-666666666666", "Taylor", "Nguyen", "09121234572", AthleteStatus.Active,
-                Gender.Female, FitnessGoal.Hypertrophy, 58m, 19m, "user-taylor", 3),
-            CreateAthlete("77777777-7777-7777-7777-777777777777", "Casey", "Brooks", "09121234573", AthleteStatus.Active,
-                Gender.Male, FitnessGoal.Recomp, 78m, 17m, "user-casey", 1),
-            CreateAthlete("88888888-8888-8888-8888-888888888888", "Pending", "Athlete", "09129998888", AthleteStatus.Placeholder,
-                Gender.Other, FitnessGoal.Recomp, null, null, null, 0)
+            CreateAthlete("11111111-1111-1111-1111-111111111111", "علی", "محمودی", "09121234567", AthleteStatus.Active,
+                Gender.Male, FitnessGoal.Hypertrophy, 82.4m, 14.2m, "user-ali", 12),
+            CreateAthlete("22222222-2222-2222-2222-222222222222", "حسن", "محمدی", "09121234568", AthleteStatus.Active,
+                Gender.Male, FitnessGoal.Strength, 68m, 18.5m, "user-hasan", 5),
+            CreateAthlete("33333333-3333-3333-3333-333333333333", "آرین", "متین‌پور", "09121234569", AthleteStatus.OnHold,
+                Gender.Male, FitnessGoal.FatLoss, 75m, 22m, "user-aryan", 0),
+            CreateAthlete("44444444-4444-4444-4444-444444444444", "رزیتا", "نیلپور", "09121234570", AthleteStatus.Inactive,
+                Gender.Female, FitnessGoal.FatLoss, 62m, 20m, "user-rozita", 0),
+            CreateAthlete("55555555-5555-5555-5555-555555555555", "رامان", "رامین", "09121234571", AthleteStatus.Active,
+                Gender.Male, FitnessGoal.Strength, 90m, 16m, "user-raman", 8),
+            CreateAthlete("66666666-6666-6666-6666-666666666666", "سارا", "احمدی", "09121234572", AthleteStatus.Active,
+                Gender.Female, FitnessGoal.Hypertrophy, 58m, 19m, "user-sara", 3),
+            CreateAthlete("77777777-7777-7777-7777-777777777777", "مهراد", "کاظمی", "09121234573", AthleteStatus.Active,
+                Gender.Male, FitnessGoal.Recomp, 78m, 17m, "user-mehrad", 1),
+            CreateAthlete("88888888-8888-8888-8888-888888888888", "نیلوفر", "جعفری", "09129998888", AthleteStatus.Placeholder,
+                Gender.Female, FitnessGoal.Recomp, null, null, null, 0)
         ];
     }
 
@@ -98,7 +100,7 @@ public static class DatabaseSeeder
             FirstName = first,
             LastName = last,
             PhoneNumber = PhoneNormalizer.Normalize(phone),
-            Email = status == AthleteStatus.Placeholder ? string.Empty : $"{first.ToLower()}@volt.app",
+            Email = status == AthleteStatus.Placeholder ? string.Empty : $"{userId}@volt.app",
             UserId = userId,
             Status = status,
             Gender = gender,
@@ -124,9 +126,9 @@ public static class DatabaseSeeder
                 WeightKg = athlete.WeightKg ?? 75m,
                 Goal = athlete.Goal,
                 TrainingExperience = TrainingExperience.Intermediate,
-                Injuries = "None reported",
-                MedicalConditions = "None",
-                AvailableEquipment = "Full gym access",
+                Injuries = "موردی گزارش نشده",
+                MedicalConditions = "ندارد",
+                AvailableEquipment = "دسترسی کامل به باشگاه",
                 TrainingDaysPerWeek = 4,
                 CreatedAt = DateTime.UtcNow.AddDays(-14)
             });
@@ -179,7 +181,7 @@ public static class DatabaseSeeder
                     PhotoUrl = $"https://picsum.photos/seed/{athlete.Id:N}{i}/400/600",
                     Date = today.AddDays(-i * 14),
                     Weight = athlete.WeightKg,
-                    Notes = i == 0 ? "Baseline" : "2-week check-in"
+                    Notes = i == 0 ? "خط پایه" : "پیگیری دو هفته"
                 });
             }
         }
@@ -192,21 +194,21 @@ public static class DatabaseSeeder
         List<Exercise> exercises)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
-        var alex = athletes[0];
-        var sam = athletes[1];
-        var jamie = athletes[4];
+        var ali = athletes[0];
+        var hasan = athletes[1];
+        var raman = athletes[4];
 
         var activePlan = new WorkoutPlan
         {
             Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
             NameEn = "Hypertrophy Block A",
-            NameFa = "بلوک هیpertrophy A",
+            NameFa = "بلوک حجم‌گیری A",
             DescriptionEn = "Push / Pull / Legs split",
             DescriptionFa = "اسplit فشار / کشش / پا",
             Goal = FitnessGoal.Hypertrophy,
             DurationWeeks = 8,
             Status = ProgramStatus.Active,
-            AthleteId = alex.Id,
+            AthleteId = ali.Id,
             CoachId = coachId,
             StartDate = today.AddDays(-21),
             EndDate = today.AddDays(35),
@@ -228,7 +230,7 @@ public static class DatabaseSeeder
             Goal = FitnessGoal.Strength,
             DurationWeeks = 6,
             Status = ProgramStatus.Active,
-            AthleteId = sam.Id,
+            AthleteId = hasan.Id,
             CoachId = coachId,
             StartDate = today.AddDays(-40),
             EndDate = today.AddDays(3),
@@ -248,7 +250,7 @@ public static class DatabaseSeeder
             Goal = FitnessGoal.Recomp,
             DurationWeeks = 4,
             Status = ProgramStatus.Completed,
-            AthleteId = jamie.Id,
+            AthleteId = raman.Id,
             CoachId = coachId,
             StartDate = today.AddDays(-90),
             EndDate = today.AddDays(-62),
@@ -304,7 +306,7 @@ public static class DatabaseSeeder
                 Id = Guid.NewGuid(),
                 AthleteId = athlete.Id,
                 CoachId = coachId,
-                Text = $"Focus on progressive overload for {athlete.FirstName}. Monitor recovery.",
+                Text = $"تمرکز روی افزایش تدریجی بار برای {athlete.FirstName} {athlete.LastName}. ریکاوری را زیر نظر بگیرید.",
                 CreatedAt = DateTime.UtcNow.AddDays(-2)
             });
         }
@@ -313,15 +315,15 @@ public static class DatabaseSeeder
     private static void SeedWorkoutSessions(GymCoachDbContext db, List<Athlete> athletes)
     {
         var today = DateTime.UtcNow;
-        var alex = athletes[0];
-        var sam = athletes[1];
-        var jamie = athletes[4];
+        var ali = athletes[0];
+        var hasan = athletes[1];
+        var raman = athletes[4];
 
         db.WorkoutSessions.AddRange(
             new WorkoutSession
             {
                 Id = Guid.NewGuid(),
-                AthleteId = alex.Id,
+                AthleteId = ali.Id,
                 WorkoutPlanId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                 SessionDate = today.AddDays(-1),
                 IsCompleted = true
@@ -329,14 +331,14 @@ public static class DatabaseSeeder
             new WorkoutSession
             {
                 Id = Guid.NewGuid(),
-                AthleteId = sam.Id,
+                AthleteId = hasan.Id,
                 SessionDate = today.AddDays(-2),
                 IsCompleted = true
             },
             new WorkoutSession
             {
                 Id = Guid.NewGuid(),
-                AthleteId = jamie.Id,
+                AthleteId = raman.Id,
                 SessionDate = today.AddDays(-10),
                 IsCompleted = true
             });

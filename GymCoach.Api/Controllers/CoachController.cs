@@ -2,6 +2,7 @@ using GymCoach.Api.Services;
 using GymCoach.Shared.Common;
 using GymCoach.Shared.Constants;
 using GymCoach.Shared.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymCoach.Api.Controllers;
@@ -13,6 +14,7 @@ public class CoachController(
     ICurrentCoachProvider coachProvider) : ControllerBase
 {
     [HttpGet("dashboard")]
+    [AllowAnonymous]
     public async Task<ActionResult<Result<CoachDashboardDto>>> GetDashboard(CancellationToken cancellationToken)
     {
         var result = await dashboardService.GetDashboardAsync(coachProvider.GetCoachId(), cancellationToken);

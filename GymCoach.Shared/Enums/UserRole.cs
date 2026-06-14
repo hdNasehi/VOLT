@@ -2,7 +2,9 @@ namespace GymCoach.Shared.Enums;
 
 public enum UserRole
 {
-    Admin = 0,
-    Coach = 1,
-    Athlete = 2
+    SuperAdmin = 0,
+    SystemAdmin = 1,
+    GymManager = 2,
+    Coach = 3,
+    Athlete = 4
 }
