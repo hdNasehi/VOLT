@@ -1,0 +1,76 @@
+<div class="exercise-card @(IsLocked ? "is-locked" : null) @(IsCompleted ? "is-completed" : null)">
+    <div class="exercise-header">
+        <MudText Typo="Typo.h6">@Exercise.Name</MudText>
+        <MudChip T="string" Size="Size.Small">@Exercise.MuscleGroup</MudChip>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Exercise.SetScheme))
+    {
+        <MudChip T="string" Size="Size.Small" Color="Color.Secondary" Class="scheme-chip">@Exercise.SetScheme</MudChip>
+    }
+
+    <MudText Typo="Typo.body2" Class="description">@Exercise.Description</MudText>
+
+    @if (!string.IsNullOrWhiteSpace(Exercise.GifUrl))
+    {
+        <img src="@Exercise.GifUrl" alt="@Exercise.Name" class="exercise-gif" loading="lazy" />
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Exercise.VideoUrl))
+    {
+        <div class="video-wrap">
+            <iframe src="@Exercise.VideoUrl" title="@Exercise.Name video" allowfullscreen loading="lazy"></iframe>
+        </div>
+    }
+
+  @if (Exercise.Tips.Count > 0)
+    {
+        <MudText Typo="Typo.subtitle2">@TipsLabel</MudText>
+        <ul class="tips-list">
+            @foreach (var tip in Exercise.Tips)
+            {
+                <li>@tip</li>
+            }
+        </ul>
+    }
+
+    @if (Exercise.CommonMistakes.Count > 0)
+    {
+        <MudText Typo="Typo.subtitle2">@MistakesLabel</MudText>
+        <ul class="mistakes-list">
+            @foreach (var mistake in Exercise.CommonMistakes)
+            {
+                <li>@mistake</li>
+            }
+        </ul>
+    }
+
+    <div class="prescription">
+        <span>@Exercise.Sets x @Exercise.Reps</span>
+        <span>@RestLabel: @Exercise.RestSeconds s</span>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Exercise.CoachNotes))
+    {
+        <MudAlert Severity="Severity.Info" Class="coach-notes">@Exercise.CoachNotes</MudAlert>
+    }
+
+    @if (ShowActions)
+    {
+        <div class="actions">
+            @if (!IsCompleted && !IsLocked)
+            {
+                <VoltButton OnClick="() => OnStart.InvokeAsync(Exercise.Id)">@StartLabel</VoltButton>
+                <VoltButton Variant="Variant.Outlined" OnClick="() => OnComplete.InvokeAsync(Exercise.Id)">@CompleteLabel</VoltButton>
+            }
+            else if (IsCompleted)
+            {
+                <MudChip T="string" Color="Color.Success" Icon="@Icons.Material.Filled.Check">@CompletedLabel</MudChip>
+            }
+            else if (IsLocked)
+            {
+                <MudText Typo="Typo.caption">@LockedLabel</MudText>
+            }
+        </div>
+    }
+</div>

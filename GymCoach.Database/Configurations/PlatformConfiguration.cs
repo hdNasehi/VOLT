@@ -17,7 +17,6 @@ public sealed class PlatformConfiguration : IEntityTypeConfiguration<Gym>,
     public void Configure(EntityTypeBuilder<Gym> builder)
     {
         builder.Property(g => g.Name).HasMaxLength(200);
-        builder.Property(g => g.CommissionRate).HasPrecision(5, 4);
         builder.HasIndex(g => g.Name);
     }
 
@@ -35,7 +34,6 @@ public sealed class PlatformConfiguration : IEntityTypeConfiguration<Gym>,
 
     public void Configure(EntityTypeBuilder<PaymentOrder> builder)
     {
-        builder.Property(p => p.Amount).HasPrecision(18, 2);
         builder.HasIndex(p => p.AthleteId);
         builder.HasIndex(p => p.WorkoutPlanId);
         builder.HasIndex(p => p.Status);
@@ -54,12 +52,10 @@ public sealed class PlatformConfiguration : IEntityTypeConfiguration<Gym>,
         builder.HasIndex(c => c.UserId);
         builder.HasIndex(c => c.PhoneNumber);
         builder.HasIndex(c => c.ApprovalStatus);
-        builder.Property(c => c.MaxPlanPrice).HasPrecision(18, 2);
     }
 
     public void Configure(EntityTypeBuilder<WorkoutPlan> builder)
     {
-        builder.Property(p => p.Price).HasPrecision(18, 2);
         builder.HasIndex(p => p.CoachId);
         builder.HasIndex(p => p.AthleteId);
         builder.HasIndex(p => p.Status);

@@ -1,0 +1,76 @@
+.exercise-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 1rem;
+}
+
+.exercise-card.is-locked {
+    opacity: 0.5;
+}
+
+.exercise-card.is-completed {
+    border-color: rgba(74, 222, 128, 0.35);
+}
+
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.scheme-chip {
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+}
+
+.exercise-gif {
+    width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    margin-bottom: 0.75rem;
+}
+
+.video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 0.5rem;
+}
+
+.tips-list, .mistakes-list {
+    margin: 0.25rem 0 0.75rem 1rem;
+    padding: 0;
+}
+
+.prescription {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.coach-notes {
+    margin-top: 0.5rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}

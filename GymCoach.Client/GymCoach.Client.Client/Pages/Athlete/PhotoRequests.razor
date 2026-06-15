@@ -1,0 +1,41 @@
+@page "/athlete/photos"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+
+<VoltPageHeader Title="@L10n["Athlete.Photos.Title"]" Subtitle="@L10n["Athlete.Photos.Subtitle"]" />
+
+@if (_loading)
+{
+    <VoltLoading />
+}
+else
+{
+    @foreach (var request in _requests)
+    {
+        <PhotoRequestCard Request="request"
+                          UploadLabel="@L10n["Athlete.Photos.Upload"]"
+                          PendingLabel="@L10n["Athlete.Photos.Pending"]"
+                          ApprovedLabel="@L10n["Athlete.Photos.Approved"]"
+                          RejectedLabel="@L10n["Athlete.Photos.Rejected"]"
+                          OnUploaded="HandleUpload" />
+    }
+}
+
+@code {
+    private bool _loading = true;
+    private IReadOnlyList<PhotoRequestModel> _requests = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _requests = await Experience.GetPhotoRequestsAsync();
+        _loading = false;
+    }
+
+    private async Task HandleUpload((Guid RequestId, string ImageUrl) payload)
+    {
+        await Experience.UploadPhotoAsync(payload.RequestId, payload.ImageUrl);
+        _requests = await Experience.GetPhotoRequestsAsync();
+    }
+}

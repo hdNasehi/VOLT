@@ -1,0 +1,25 @@
+@inject IAuthStateService AuthState
+@inject VoltAuthenticationStateProvider AuthProvider
+
+@if (_ready)
+{
+    @ChildContent
+}
+else
+{
+    <VoltLoading Message="@LoadingMessage" />
+}
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? LoadingMessage { get; set; }
+
+    private bool _ready;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthState.InitializeAsync();
+        AuthProvider.NotifyAuthenticationChanged();
+        _ready = true;
+    }
+}

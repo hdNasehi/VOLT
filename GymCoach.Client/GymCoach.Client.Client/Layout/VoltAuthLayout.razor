@@ -1,0 +1,24 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject ILocalizationService L10n
+
+<div class="volt-auth-layout" dir="@(L10n.IsRtl ? "rtl" : "ltr")">
+    <MudThemeProvider Theme="_theme" IsDarkMode="true" />
+    <MudPopoverProvider />
+    <MudDialogProvider />
+    <MudSnackbarProvider />
+
+    <main class="volt-auth-main">
+        @Body
+    </main>
+</div>
+
+@code {
+    private readonly MudTheme _theme = VoltMudTheme.Create();
+
+    protected override void OnInitialized() => L10n.CultureChanged += OnCultureChanged;
+
+    private void OnCultureChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => L10n.CultureChanged -= OnCultureChanged;
+}

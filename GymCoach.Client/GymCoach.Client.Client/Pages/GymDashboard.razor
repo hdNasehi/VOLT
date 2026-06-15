@@ -1,0 +1,6 @@
+@page "/gym"
+@attribute [Authorize(Roles = Roles.GymManager)]
+@inject ILocalizationService L10n
+
+<VoltPageHeader Title="@L10n["Gym.Title"]" Subtitle="@L10n["Gym.Subtitle"]" />
+<VoltEmptyState Title="@L10n["Gym.ComingSoon"]" />

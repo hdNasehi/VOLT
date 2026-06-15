@@ -1,4 +1,5 @@
 @page "/ai-coach"
+@attribute [Authorize(Roles = Roles.Coach)]
 
 <VoltPageHeader Title="AI Coach" Subtitle="Personalized guidance" />
 <VoltEmptyState Title="AI Coach" Description="Connect with your AI coaching assistant." Icon="@Icons.Material.Filled.Psychology" />

@@ -1,0 +1,21 @@
+<VoltCard Title="@Title" CssClass="active-program-card">
+    <div class="program-meta">
+        <MudText Typo="Typo.subtitle1" Class="program-name">@Program.ProgramName</MudText>
+        <MudText Typo="Typo.body2">@CoachLabel: @Program.CoachName</MudText>
+        <MudText Typo="Typo.caption">@Program.StartDate.ToString("d") — @Program.EndDate.ToString("d")</MudText>
+    </div>
+
+    <div class="program-stats">
+        <div class="stat">
+            <MudText Typo="Typo.caption">@DayLabel</MudText>
+            <MudText Typo="Typo.h6">@Program.CurrentDay / @Program.TotalDays</MudText>
+        </div>
+        <VoltProgressRing Value="@Program.ProgressPercent" ShowLabel="true" AriaLabel="@ProgressLabel" />
+        <div class="stat">
+            <MudText Typo="Typo.caption">@RemainingLabel</MudText>
+            <MudText Typo="Typo.h6">@Program.DaysRemaining</MudText>
+        </div>
+    </div>
+
+    <VoltButton CssClass="start-btn" OnClick="HandleStartAsync">@StartWorkoutLabel</VoltButton>
+</VoltCard>

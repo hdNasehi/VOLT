@@ -1,0 +1,6 @@
+@page "/admin"
+@attribute [Authorize(Roles = $"{Roles.SuperAdmin},{Roles.SystemAdmin}")]
+@inject ILocalizationService L10n
+
+<VoltPageHeader Title="@L10n["Admin.Title"]" Subtitle="@L10n["Admin.Subtitle"]" />
+<VoltEmptyState Title="@L10n["Admin.ComingSoon"]" />

@@ -1,0 +1,21 @@
+@inject ILocalizationService L10n
+@inject NavigationManager Navigation
+
+<nav class="volt-bottom-nav volt-athlete-nav" aria-label="Athlete navigation">
+    <NavLink class="volt-nav-item" href="/athlete" Match="NavLinkMatch.All" ActiveClass="active">
+        <MudIcon Icon="@Icons.Material.Filled.Home" Size="Size.Small" />
+        <span>@L10n["Nav.Home"]</span>
+    </NavLink>
+    <NavLink class="volt-nav-item" href="/athlete/programs" ActiveClass="active">
+        <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Size="Size.Small" />
+        <span>@L10n["Athlete.Nav.Programs"]</span>
+    </NavLink>
+    <NavLink class="volt-nav-item" href="/athlete/photos" ActiveClass="active">
+        <MudIcon Icon="@Icons.Material.Filled.PhotoCamera" Size="Size.Small" />
+        <span>@L10n["Athlete.Nav.Photos"]</span>
+    </NavLink>
+    <NavLink class="volt-nav-item" href="/profile" ActiveClass="active">
+        <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" />
+        <span>@L10n["Nav.Profile"]</span>
+    </NavLink>
+</nav>

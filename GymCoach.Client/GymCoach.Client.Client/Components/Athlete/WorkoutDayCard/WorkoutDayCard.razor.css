@@ -1,0 +1,35 @@
+.workout-day-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+}
+
+.workout-day-card.is-current {
+    border-color: #7C5CFF;
+    font-weight: 700;
+}
+
+.workout-day-card.is-completed {
+    color: #4ade80;
+}
+
+.workout-day-card.is-missed {
+    color: #f87171;
+}
+
+.workout-day-card.is-future {
+    opacity: 0.55;
+}
+
+.day-name {
+    flex: 1;
+}
+
+.chevron {
+    opacity: 0.6;
+}

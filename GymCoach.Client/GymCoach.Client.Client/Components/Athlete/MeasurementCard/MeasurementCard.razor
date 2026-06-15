@@ -1,0 +1,16 @@
+<VoltCard Title="@Title" CssClass="measurement-card">
+    <div class="measurement-grid">
+        <div class="measurement-item">
+            <MudText Typo="Typo.caption">@WeightLabel</MudText>
+            <MudText Typo="Typo.h5">@(Progress.WeightKg?.ToString("0.0") ?? "—") <span class="unit">kg</span></MudText>
+        </div>
+        <div class="measurement-item">
+            <MudText Typo="Typo.caption">@BodyFatLabel</MudText>
+            <MudText Typo="Typo.h5">@(Progress.BodyFatPercent?.ToString("0.0") ?? "—")<span class="unit">%</span></MudText>
+        </div>
+    </div>
+    @if (Progress.LastMeasured.HasValue)
+    {
+        <MudText Typo="Typo.caption" Class="measured-at">@LastMeasuredLabel: @Progress.LastMeasured.Value.ToString("d")</MudText>
+    }
+</VoltCard>

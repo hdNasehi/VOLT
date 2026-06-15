@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GymCoach.Client (https)" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+    <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/GymCoach.Client/GymCoach.Client/GymCoach.Client.csproj" />
+    <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
+    <option name="LAUNCH_PROFILE_NAME" value="https" />
+    <method v="2">
+      <option name="Build" />
+    </method>
+  </configuration>
+</component>

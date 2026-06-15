@@ -1,0 +1,20 @@
+.athlete-dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.welcome {
+    font-weight: 700;
+}
+
+.meta {
+    opacity: 0.8;
+}

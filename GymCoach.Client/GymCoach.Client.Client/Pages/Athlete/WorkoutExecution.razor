@@ -1,0 +1,87 @@
+@page "/athlete/workout"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+@inject NavigationManager Navigation
+
+@if (_session is null)
+{
+    <VoltEmptyState Title="@L10n["Athlete.Workout.NoSession"]" />
+    <VoltButton OnClick="GoHome">@L10n["Athlete.BackDashboard"]</VoltButton>
+}
+else
+{
+    <VoltPageHeader Title="@_session.DayName" Subtitle="@L10n["Athlete.Workout.InProgress"]" />
+    <WorkoutSessionTimer StartedAt="_session.StartedAt" Label="@L10n["Athlete.Workout.SessionTime"]" />
+
+    @if (_session.IsResting && _session.RestSecondsRemaining.HasValue)
+    {
+        <RestTimer Title="@L10n["Athlete.Workout.Rest"]"
+                   TotalSeconds="_restTotal"
+                   SecondsRemaining="_session.RestSecondsRemaining"
+                   IsActive="true"
+                   ExceededLabel="@L10n["Athlete.Workout.RestExceeded"]"
+                   SkipLabel="@L10n["Athlete.Workout.SkipRest"]"
+                   OnSkip="SkipRest" />
+    }
+
+    @foreach (var exercise in _session.Exercises)
+    {
+        <ExerciseCard Exercise="exercise"
+                      ShowActions="true"
+                      IsLocked="exercise.IsLocked"
+                      IsCompleted="exercise.IsCompleted"
+                      TipsLabel="@L10n["Athlete.Exercise.Tips"]"
+                      MistakesLabel="@L10n["Athlete.Exercise.Mistakes"]"
+                      RestLabel="@L10n["Athlete.Exercise.Rest"]"
+                      StartLabel="@L10n["Athlete.Workout.StartExercise"]"
+                      CompleteLabel="@L10n["Athlete.Workout.CompleteExercise"]"
+                      CompletedLabel="@L10n["Athlete.Workout.Completed"]"
+                      LockedLabel="@L10n["Athlete.Workout.Locked"]"
+                      OnStart="StartExercise"
+                      OnComplete="CompleteExercise" />
+    }
+}
+
+@code {
+    private WorkoutSessionModel? _session;
+    private int _restTotal = 60;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _session = await Experience.GetActiveSessionAsync();
+    }
+
+    private void StartExercise(Guid exerciseId)
+    {
+        // Tracked locally for demo; API persistence in a later phase.
+    }
+
+    private async Task CompleteExercise(Guid exerciseId)
+    {
+        if (_session is null)
+        {
+            return;
+        }
+
+        var exercise = _session.Exercises.First(e => e.Id == exerciseId);
+        _restTotal = exercise.RestSeconds;
+        await Experience.CompleteExerciseAsync(_session.SessionId, exerciseId);
+        _session = await Experience.GetActiveSessionAsync();
+    }
+
+    private async Task SkipRest()
+    {
+        if (_session is null)
+        {
+            return;
+        }
+
+        _session.IsResting = false;
+        _session.RestSecondsRemaining = null;
+        await Task.CompletedTask;
+    }
+
+    private void GoHome() => Navigation.NavigateTo("/athlete");
+}

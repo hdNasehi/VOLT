@@ -1,0 +1,50 @@
+@page "/athlete/programs/{ProgramId:guid}"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+@inject NavigationManager Navigation
+
+@if (_loading)
+{
+    <VoltLoading />
+}
+else if (_program is null)
+{
+    <VoltEmptyState Title="@L10n["Athlete.Program.NotFound"]" />
+}
+else
+{
+    <VoltPageHeader Title="@_program.Name" Subtitle="@($"{L10n["Athlete.Coach"]}: {_program.CoachName}")" />
+
+    <VoltCard Title="@L10n["Athlete.Program.Details"]">
+        <MudText Typo="Typo.body2">@L10n["Athlete.Program.Goal"]: @GetGoalLabel(_program.Goal)</MudText>
+        <MudText Typo="Typo.body2">@L10n["Athlete.Program.Duration"]: @_program.DurationWeeks @L10n["Athlete.Program.Weeks"]</MudText>
+    </VoltCard>
+
+    <VoltSectionHeader Title="@L10n["Athlete.Program.Days"]" />
+    <ProgramTimeline Days="_program.Days" OnDaySelected="GoToDay" />
+}
+
+@code {
+    [Parameter] public Guid ProgramId { get; set; }
+
+    private bool _loading = true;
+    private ProgramDetailModel? _program;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _program = await Experience.GetProgramDetailAsync(ProgramId);
+        _loading = false;
+    }
+
+    private void GoToDay(Guid dayId) => Navigation.NavigateTo($"/athlete/programs/{ProgramId}/days/{dayId}");
+
+    private string GetGoalLabel(GymCoach.Shared.Enums.FitnessGoal goal) => goal switch
+    {
+        GymCoach.Shared.Enums.FitnessGoal.Hypertrophy => L10n["Goal.Hypertrophy"],
+        GymCoach.Shared.Enums.FitnessGoal.Strength => L10n["Goal.Strength"],
+        GymCoach.Shared.Enums.FitnessGoal.FatLoss => L10n["Goal.FatLoss"],
+        _ => L10n["Goal.Recomp"]
+    };
+}

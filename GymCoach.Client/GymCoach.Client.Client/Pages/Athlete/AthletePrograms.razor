@@ -1,0 +1,55 @@
+@page "/athlete/programs"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+@inject NavigationManager Navigation
+
+<VoltPageHeader Title="@L10n["Athlete.Programs.Title"]" Subtitle="@L10n["Athlete.Programs.Subtitle"]" />
+
+@if (_loading)
+{
+    <VoltLoading />
+}
+else
+{
+    <VoltSectionHeader Title="@L10n["Athlete.Programs.Active"]" />
+    @foreach (var program in _active)
+    {
+        <ProgramSummaryCard Program="program"
+                            CoachLabel="@L10n["Athlete.Coach"]"
+                            ActiveLabel="@L10n["Athlete.Active"]"
+                            CompletedLabel="@L10n["Athlete.Completed"]"
+                            OnSelected="GoToProgram" />
+    }
+
+    <VoltSectionHeader Title="@L10n["Athlete.Programs.Completed"]" />
+    @if (_completed.Count == 0)
+    {
+        <VoltEmptyState Title="@L10n["Athlete.Programs.NoneCompleted"]" />
+    }
+    @foreach (var program in _completed)
+    {
+        <ProgramSummaryCard Program="program"
+                            CoachLabel="@L10n["Athlete.Coach"]"
+                            ActiveLabel="@L10n["Athlete.Active"]"
+                            CompletedLabel="@L10n["Athlete.Completed"]"
+                            OnSelected="GoToProgram" />
+    }
+}
+
+@code {
+    private bool _loading = true;
+    private List<ProgramSummaryModel> _active = [];
+    private List<ProgramSummaryModel> _completed = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var programs = await Experience.GetProgramsAsync();
+        _active = programs.Where(p => p.IsActive).ToList();
+        _completed = programs.Where(p => !p.IsActive).ToList();
+        _loading = false;
+    }
+
+    private void GoToProgram(Guid id) => Navigation.NavigateTo($"/athlete/programs/{id}");
+}

@@ -1,0 +1,47 @@
+@page "/login"
+@layout VoltAuthLayout
+@attribute [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+@inject ILocalizationService L10n
+@inject IAuthClientService AuthClient
+@inject IAuthStateService AuthState
+@inject NavigationManager Navigation
+
+<LoginForm Title="@L10n["Login.Title"]"
+           Subtitle="@L10n["Login.Subtitle"]"
+           PhoneLabel="@L10n["Login.Phone"]"
+           PasswordLabel="@L10n["Login.Password"]"
+           SubmitLabel="@L10n["Login.Submit"]"
+           Hint="@L10n["Login.TestHint"]"
+           ErrorMessage="@_error"
+           IsBusy="@_busy"
+           OnSubmit="HandleLoginAsync" />
+
+@code {
+    private string? _error;
+    private bool _busy;
+
+    protected override void OnInitialized()
+    {
+        if (AuthState.IsAuthenticated)
+        {
+            Navigation.NavigateTo(AuthState.GetHomeRoute(), replace: true);
+        }
+    }
+
+    private async Task HandleLoginAsync(AuthLoginRequest request)
+    {
+        _busy = true;
+        _error = null;
+
+        var result = await AuthClient.LoginAsync(request);
+        if (!result.IsSuccess || result.Value is null)
+        {
+            _error = result.Error ?? L10n["Login.Error"];
+            _busy = false;
+            return;
+        }
+
+        await AuthState.SetSessionAsync(result.Value);
+        Navigation.NavigateTo(AuthState.GetHomeRoute(), replace: true);
+    }
+}

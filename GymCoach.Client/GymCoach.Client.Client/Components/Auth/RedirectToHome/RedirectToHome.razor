@@ -1,0 +1,7 @@
+@inject IAuthStateService AuthState
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo(AuthState.GetHomeRoute(), replace: true);
+}

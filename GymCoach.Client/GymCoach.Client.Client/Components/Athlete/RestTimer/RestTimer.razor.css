@@ -1,0 +1,21 @@
+.rest-timer {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: rgba(124, 92, 255, 0.12);
+    margin-bottom: 1rem;
+}
+
+.rest-timer.is-exceeded {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+
+.timer-value {
+    font-variant-numeric: tabular-nums;
+    margin: 0.25rem 0;
+}
+
+.exceeded-label {
+    color: #f87171;
+}

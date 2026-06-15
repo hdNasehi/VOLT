@@ -1,0 +1,17 @@
+<VoltCard Title="@Title" CssClass="pending-requests-card">
+    <div class="request-row" @onclick="() => OnPhotoRequestsClick.InvokeAsync()">
+        <MudIcon Icon="@Icons.Material.Filled.PhotoCamera" />
+        <div>
+            <MudText Typo="Typo.body1">@PhotoRequestsLabel</MudText>
+            <MudText Typo="Typo.caption">@Requests.PhotoRequests @PendingLabel</MudText>
+        </div>
+        <MudIcon Icon="@Icons.Material.Filled.ChevronRight" />
+    </div>
+    <div class="request-row">
+        <MudIcon Icon="@Icons.Material.Filled.Straighten" />
+        <div>
+            <MudText Typo="Typo.body1">@MeasurementRequestsLabel</MudText>
+            <MudText Typo="Typo.caption">@Requests.MeasurementRequests @PendingLabel</MudText>
+        </div>
+    </div>
+</VoltCard>

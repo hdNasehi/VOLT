@@ -1,0 +1,47 @@
+<div class="login-form">
+    <MudText Typo="Typo.h4" Class="login-title">@Title</MudText>
+  @if (!string.IsNullOrWhiteSpace(Subtitle))
+    {
+        <MudText Typo="Typo.body2" Class="login-subtitle">@Subtitle</MudText>
+    }
+
+    <EditForm Model="_model" OnValidSubmit="HandleSubmitAsync">
+        <DataAnnotationsValidator />
+        <MudTextField @bind-Value="_model.PhoneNumber"
+                      Label="@PhoneLabel"
+                      InputType="InputType.Telephone"
+                      Variant="Variant.Outlined"
+                      Class="login-field"
+                      Required="true" />
+        <MudTextField @bind-Value="_model.Password"
+                      Label="@PasswordLabel"
+                      InputType="@_passwordInput"
+                      Variant="Variant.Outlined"
+                      Class="login-field"
+                      Adornment="Adornment.End"
+                      AdornmentIcon="@_passwordIcon"
+                      OnAdornmentClick="TogglePassword"
+                      Required="true" />
+
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="login-error">@ErrorMessage</MudAlert>
+        }
+
+        <VoltButton CssClass="login-submit" Disabled="@IsBusy" OnClick="HandleSubmitClick">
+            @if (IsBusy)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+            }
+            else
+            {
+                @SubmitLabel
+            }
+        </VoltButton>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(Hint))
+    {
+        <MudText Typo="Typo.caption" Class="login-hint">@Hint</MudText>
+    }
+</div>

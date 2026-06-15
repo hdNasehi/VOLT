@@ -1,0 +1,11 @@
+@implements IDisposable
+
+<div class="rest-timer @(_exceeded ? "is-exceeded" : null)">
+    <MudText Typo="Typo.subtitle2">@Title</MudText>
+    <MudText Typo="Typo.h4" Class="timer-value">@FormatTime(_remaining)</MudText>
+    @if (_exceeded)
+    {
+        <MudText Typo="Typo.caption" Class="exceeded-label">@ExceededLabel</MudText>
+    }
+    <VoltButton Variant="Variant.Text" OnClick="SkipRest">@SkipLabel</VoltButton>
+</div>

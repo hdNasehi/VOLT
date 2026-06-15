@@ -1,0 +1,19 @@
+<VoltCard Title="@Title" CssClass="progress-chart-card">
+    @if (Points.Count == 0)
+    {
+        <MudText Typo="Typo.body2">@EmptyLabel</MudText>
+    }
+    else
+    {
+        <div class="chart-bars" role="img" aria-label="@Title">
+            @foreach (var point in Points)
+            {
+                <div class="bar-col">
+                    <div class="bar" style="height: @GetBarHeight(point.Value)%"></div>
+                    <MudText Typo="Typo.caption" Class="bar-label">@point.Label</MudText>
+                    <MudText Typo="Typo.caption" Class="bar-value">@point.Value.ToString("0.0")</MudText>
+                </div>
+            }
+        </div>
+    }
+</VoltCard>

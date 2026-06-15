@@ -1,0 +1,19 @@
+.coach-messages-card {
+    cursor: pointer;
+}
+
+.message-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.sent-at {
+    opacity: 0.65;
+    margin-top: 0.5rem;
+}
+
+.unread-chip {
+    margin-top: 0.75rem;
+}

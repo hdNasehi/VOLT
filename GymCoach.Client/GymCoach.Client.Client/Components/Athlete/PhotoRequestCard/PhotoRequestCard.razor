@@ -1,0 +1,25 @@
+<VoltCard CssClass="photo-request-card">
+    <div class="photo-header">
+        <MudText Typo="Typo.subtitle1">@Request.BodyPart</MudText>
+        <MudChip T="string" Size="Size.Small" Color="@StatusColor">@StatusText</MudChip>
+    </div>
+    <MudText Typo="Typo.body2">@Request.Instructions</MudText>
+
+    @if (!string.IsNullOrWhiteSpace(Request.ExampleImageUrl))
+    {
+        <img src="@Request.ExampleImageUrl" alt="@Request.BodyPart example" class="example-image" loading="lazy" />
+    }
+
+    @if (Request.Status == AssessmentReviewStatus.Rejected && !string.IsNullOrWhiteSpace(Request.RejectionReason))
+    {
+        <MudAlert Severity="Severity.Error" Class="rejection">@Request.RejectionReason</MudAlert>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Request.UploadedImageUrl))
+    {
+        <img src="@Request.UploadedImageUrl" alt="Uploaded" class="uploaded-image" loading="lazy" />
+    }
+
+    <InputFile OnChange="HandleFileSelected" accept="image/*" class="file-input" />
+    <VoltButton Disabled="@_uploading" OnClick="HandleUpload">@UploadLabel</VoltButton>
+</VoltCard>

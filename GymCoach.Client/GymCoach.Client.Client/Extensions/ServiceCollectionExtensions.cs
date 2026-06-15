@@ -1,7 +1,9 @@
 using GymCoach.Client.Client.Services;
+using GymCoach.Client.Client.Services.Athlete;
+using GymCoach.Client.Client.Services.Auth;
 using GymCoach.Client.Client.Services.Localization;
 using GymCoach.Client.Client.Services.Offline;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace GymCoach.Client.Client.Extensions;
 
@@ -13,6 +15,13 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddLocalization();
+
+        services.AddAuthorizationCore();
+        services.AddScoped<IAuthStateService, AuthStateService>();
+        services.AddScoped<VoltAuthenticationStateProvider>();
+        services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<VoltAuthenticationStateProvider>());
+        services.AddScoped<ILocalStorageService, LocalStorageService>();
+        services.AddScoped<IAuthClientService, AuthClientService>();
 
         services.AddScoped(sp => new HttpClient
         {
@@ -27,6 +36,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IWorkoutTrackingService, WorkoutTrackingService>();
         services.AddScoped<IMeasurementService, MeasurementService>();
         services.AddScoped<IAiCoachService, AiCoachService>();
+        services.AddScoped<IAthleteExperienceService, AthleteExperienceService>();
 
         return services;
     }

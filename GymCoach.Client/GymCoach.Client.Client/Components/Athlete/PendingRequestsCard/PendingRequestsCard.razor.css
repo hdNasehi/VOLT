@@ -1,0 +1,15 @@
+.request-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.request-row + .request-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.request-row > div {
+    flex: 1;
+}

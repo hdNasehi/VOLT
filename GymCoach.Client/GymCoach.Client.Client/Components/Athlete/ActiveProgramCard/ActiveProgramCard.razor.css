@@ -1,0 +1,23 @@
+.active-program-card .program-meta {
+    margin-bottom: 1rem;
+}
+
+.program-name {
+    font-weight: 600;
+}
+
+.program-stats {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.start-btn {
+    width: 100%;
+}

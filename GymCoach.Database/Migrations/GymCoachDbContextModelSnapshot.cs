@@ -73,6 +73,70 @@ namespace GymCoach.Database.Migrations
                     b.ToTable("Assessments");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.AssessmentPhotoSlot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AssessmentRequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SampleImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssessmentRequestId");
+
+                    b.ToTable("AssessmentPhotoSlots");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.AssessmentPhotoSubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PhotoSlotId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoSlotId");
+
+                    b.ToTable("AssessmentPhotoSubmissions");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Athlete", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,11 +214,117 @@ namespace GymCoach.Database.Migrations
                     b.ToTable("Athletes");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.AthleteCoachRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Diseases")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Goal")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("HeightCm")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<string>("Measurements")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Medications")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("RespondedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Supplements")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("WeightKg")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("CoachId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("AthleteCoachRequests");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("CoachId");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Coach", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -168,12 +338,61 @@ namespace GymCoach.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("MaxPlanPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApprovalStatus");
+
+                    b.HasIndex("PhoneNumber");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Coaches");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.CoachAssessmentRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CoachNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("CoachId");
+
+                    b.ToTable("CoachAssessmentRequests");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.CoachAthlete", b =>
@@ -206,6 +425,39 @@ namespace GymCoach.Database.Migrations
                         .HasFilter("[IsActive] = 1 AND [Role] = 0");
 
                     b.ToTable("CoachAthletes");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.CoachEarning", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PaymentOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SettlementBatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoachId");
+
+                    b.HasIndex("PaymentOrderId");
+
+                    b.HasIndex("SettlementBatchId");
+
+                    b.ToTable("CoachEarnings");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.CoachNote", b =>
@@ -257,6 +509,9 @@ namespace GymCoach.Database.Migrations
                     b.Property<string>("Equipment")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ExerciseCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -276,6 +531,8 @@ namespace GymCoach.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExerciseCategoryId");
+
                     b.ToTable("Exercises");
                 });
 
@@ -292,6 +549,28 @@ namespace GymCoach.Database.Migrations
                     b.HasIndex("AlternativeExerciseId");
 
                     b.ToTable("ExerciseAlternatives");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.ExerciseCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExerciseCategories");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.ExerciseMedia", b =>
@@ -401,6 +680,227 @@ namespace GymCoach.Database.Migrations
                     b.ToTable("ExerciseSupportingMuscles");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.Gym", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("CommissionRate")
+                        .HasPrecision(5, 4)
+                        .HasColumnType("decimal(5,4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Gyms");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymAnnouncement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GymId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GymId");
+
+                    b.ToTable("GymAnnouncements");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymAthlete", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GymId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("GymId", "AthleteId")
+                        .IsUnique();
+
+                    b.ToTable("GymAthletes");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymCoachLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GymId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoachId");
+
+                    b.HasIndex("GymId", "CoachId")
+                        .IsUnique();
+
+                    b.ToTable("GymCoaches");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymCommission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GymId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PaymentOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SettlementBatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GymId");
+
+                    b.HasIndex("PaymentOrderId");
+
+                    b.HasIndex("SettlementBatchId");
+
+                    b.ToTable("GymCommissions");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Meal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NutritionPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NutritionPlanId");
+
+                    b.ToTable("Meals");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.MealItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MealId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MealId");
+
+                    b.ToTable("MealItems");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Measurement", b =>
                 {
                     b.Property<Guid>("Id")
@@ -433,6 +933,10 @@ namespace GymCoach.Database.Migrations
                     b.Property<DateOnly>("MeasurementDate")
                         .HasColumnType("date");
 
+                    b.Property<decimal?>("Neck")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
                     b.Property<decimal?>("Shoulders")
                         .HasPrecision(6, 2)
                         .HasColumnType("decimal(6,2)");
@@ -454,6 +958,146 @@ namespace GymCoach.Database.Migrations
                     b.HasIndex("AthleteId");
 
                     b.ToTable("Measurements");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Channel")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "IsRead");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.NutritionPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CoachId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("CoachId");
+
+                    b.ToTable("NutritionPlans");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PaymentOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkoutPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WorkoutPlanId");
+
+                    b.ToTable("PaymentOrders");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PaymentTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GatewayRef")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PaymentOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentOrderId");
+
+                    b.ToTable("PaymentTransactions");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.PersonalRecord", b =>
@@ -489,6 +1133,34 @@ namespace GymCoach.Database.Migrations
                     b.HasIndex("ExerciseId");
 
                     b.ToTable("PersonalRecords");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PlatformSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.ToTable("PlatformSettings");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.ProgramDay", b =>
@@ -552,6 +1224,9 @@ namespace GymCoach.Database.Migrations
                     b.Property<int>("Sets")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SupersetGroupId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
@@ -596,6 +1271,34 @@ namespace GymCoach.Database.Migrations
                     b.ToTable("ProgressPhotos");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.SettlementBatch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("PeriodEnd")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("PeriodStart")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("SettlementBatches");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.WorkoutPlan", b =>
                 {
                     b.Property<Guid>("Id")
@@ -607,6 +1310,9 @@ namespace GymCoach.Database.Migrations
 
                     b.Property<Guid>("CoachId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DaysPerWeek")
+                        .HasColumnType("int");
 
                     b.Property<string>("DescriptionEn")
                         .IsRequired()
@@ -633,6 +1339,10 @@ namespace GymCoach.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
@@ -644,6 +1354,8 @@ namespace GymCoach.Database.Migrations
                     b.HasIndex("AthleteId");
 
                     b.HasIndex("CoachId");
+
+                    b.HasIndex("Status");
 
                     b.ToTable("WorkoutPlans");
                 });
@@ -742,6 +1454,224 @@ namespace GymCoach.Database.Migrations
                     b.ToTable("WorkoutSessionItems");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Identity.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique()
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Assessment", b =>
                 {
                     b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
@@ -753,11 +1683,90 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("Athlete");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.AssessmentPhotoSlot", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.CoachAssessmentRequest", "AssessmentRequest")
+                        .WithMany("PhotoSlots")
+                        .HasForeignKey("AssessmentRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssessmentRequest");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.AssessmentPhotoSubmission", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.AssessmentPhotoSlot", "PhotoSlot")
+                        .WithMany("Submissions")
+                        .HasForeignKey("PhotoSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhotoSlot");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Athlete", b =>
                 {
                     b.HasOne("GymCoach.Database.Entities.Coach", null)
                         .WithMany("Athletes")
                         .HasForeignKey("CoachId");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.AthleteCoachRequest", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Coach");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.ChatMessage", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Coach");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.CoachAssessmentRequest", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Coach");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.CoachAthlete", b =>
@@ -779,6 +1788,32 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("Coach");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.CoachEarning", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.PaymentOrder", "PaymentOrder")
+                        .WithMany()
+                        .HasForeignKey("PaymentOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.SettlementBatch", "SettlementBatch")
+                        .WithMany("CoachEarnings")
+                        .HasForeignKey("SettlementBatchId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Coach");
+
+                    b.Navigation("PaymentOrder");
+
+                    b.Navigation("SettlementBatch");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.CoachNote", b =>
                 {
                     b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
@@ -796,6 +1831,13 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("Athlete");
 
                     b.Navigation("Coach");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Exercise", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.ExerciseCategory", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("ExerciseCategoryId");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.ExerciseAlternative", b =>
@@ -861,6 +1903,103 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("Exercise");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.GymAnnouncement", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Gym", "Gym")
+                        .WithMany("Announcements")
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gym");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymAthlete", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Gym", "Gym")
+                        .WithMany("AthleteLinks")
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Gym");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymCoachLink", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany("GymLinks")
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Gym", "Gym")
+                        .WithMany("CoachLinks")
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coach");
+
+                    b.Navigation("Gym");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.GymCommission", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Gym", "Gym")
+                        .WithMany()
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.PaymentOrder", "PaymentOrder")
+                        .WithMany()
+                        .HasForeignKey("PaymentOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.SettlementBatch", "SettlementBatch")
+                        .WithMany("GymCommissions")
+                        .HasForeignKey("SettlementBatchId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Gym");
+
+                    b.Navigation("PaymentOrder");
+
+                    b.Navigation("SettlementBatch");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Meal", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.NutritionPlan", "NutritionPlan")
+                        .WithMany("Meals")
+                        .HasForeignKey("NutritionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NutritionPlan");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.MealItem", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Meal", "Meal")
+                        .WithMany("Items")
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meal");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Measurement", b =>
                 {
                     b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
@@ -870,6 +2009,55 @@ namespace GymCoach.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Athlete");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.NutritionPlan", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Coach");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PaymentOrder", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.Athlete", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Entities.WorkoutPlan", "WorkoutPlan")
+                        .WithMany()
+                        .HasForeignKey("WorkoutPlanId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("WorkoutPlan");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PaymentTransaction", b =>
+                {
+                    b.HasOne("GymCoach.Database.Entities.PaymentOrder", "PaymentOrder")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PaymentOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentOrder");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.PersonalRecord", b =>
@@ -1006,6 +2194,62 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("WorkoutSession");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("GymCoach.Database.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("GymCoach.Database.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymCoach.Database.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("GymCoach.Database.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.AssessmentPhotoSlot", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.Athlete", b =>
                 {
                     b.Navigation("Assessments");
@@ -1029,7 +2273,14 @@ namespace GymCoach.Database.Migrations
                 {
                     b.Navigation("Athletes");
 
+                    b.Navigation("GymLinks");
+
                     b.Navigation("WorkoutPlans");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.CoachAssessmentRequest", b =>
+                {
+                    b.Navigation("PhotoSlots");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.Exercise", b =>
@@ -1045,9 +2296,45 @@ namespace GymCoach.Database.Migrations
                     b.Navigation("SupportingMuscles");
                 });
 
+            modelBuilder.Entity("GymCoach.Database.Entities.ExerciseCategory", b =>
+                {
+                    b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Gym", b =>
+                {
+                    b.Navigation("Announcements");
+
+                    b.Navigation("AthleteLinks");
+
+                    b.Navigation("CoachLinks");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.Meal", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.NutritionPlan", b =>
+                {
+                    b.Navigation("Meals");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.PaymentOrder", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("GymCoach.Database.Entities.ProgramDay", b =>
                 {
                     b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("GymCoach.Database.Entities.SettlementBatch", b =>
+                {
+                    b.Navigation("CoachEarnings");
+
+                    b.Navigation("GymCommissions");
                 });
 
             modelBuilder.Entity("GymCoach.Database.Entities.WorkoutPlan", b =>

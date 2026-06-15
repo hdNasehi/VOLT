@@ -1,0 +1,49 @@
+@page "/athlete/programs/{ProgramId:guid}/days/{DayId:guid}"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+@inject NavigationManager Navigation
+
+@if (_loading)
+{
+    <VoltLoading />
+}
+else if (_day is null)
+{
+    <VoltEmptyState Title="@L10n["Athlete.Day.NotFound"]" />
+}
+else
+{
+    <VoltPageHeader Title="@_day.DayName" Subtitle="@_day.ProgramName" />
+
+    @foreach (var exercise in _day.Exercises)
+    {
+        <ExerciseCard Exercise="exercise"
+                      TipsLabel="@L10n["Athlete.Exercise.Tips"]"
+                      MistakesLabel="@L10n["Athlete.Exercise.Mistakes"]"
+                      RestLabel="@L10n["Athlete.Exercise.Rest"]" />
+    }
+
+    <VoltButton CssClass="start-day-btn" OnClick="StartWorkoutAsync">@L10n["Athlete.StartWorkout"]</VoltButton>
+}
+
+@code {
+    [Parameter] public Guid ProgramId { get; set; }
+    [Parameter] public Guid DayId { get; set; }
+
+    private bool _loading = true;
+    private WorkoutDayDetailModel? _day;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _day = await Experience.GetWorkoutDayAsync(ProgramId, DayId);
+        _loading = false;
+    }
+
+    private async Task StartWorkoutAsync()
+    {
+        await Experience.StartWorkoutAsync(ProgramId, DayId);
+        Navigation.NavigateTo("/athlete/workout");
+    }
+}

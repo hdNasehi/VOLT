@@ -1,0 +1,84 @@
+@page "/athlete"
+@layout VoltAthleteShell
+@attribute [Authorize(Roles = Roles.Athlete)]
+@inject ILocalizationService L10n
+@inject IAthleteExperienceService Experience
+@inject NavigationManager Navigation
+
+@if (_loading)
+{
+    <VoltLoading Message="@L10n["Athlete.Dashboard.Loading"]" />
+}
+else if (_dashboard is not null)
+{
+    <AthleteDashboardHeader AthleteName="@_dashboard.AthleteName"
+                            CoachName="@_dashboard.CoachName"
+                            GymName="@_dashboard.GymName"
+                            WelcomeLabel="@L10n["Athlete.Welcome"]"
+                            CoachLabel="@L10n["Athlete.Coach"]"
+                            GymLabel="@L10n["Athlete.Gym"]" />
+
+    @if (_dashboard.ActiveProgram is not null)
+    {
+        <ActiveProgramCard Program="_dashboard.ActiveProgram"
+                           Title="@L10n["Athlete.ActiveProgram"]"
+                           CoachLabel="@L10n["Athlete.Coach"]"
+                           DayLabel="@L10n["Athlete.Day"]"
+                           RemainingLabel="@L10n["Athlete.DaysRemaining"]"
+                           ProgressLabel="@L10n["Athlete.Progress"]"
+                           StartWorkoutLabel="@L10n["Athlete.StartWorkout"]"
+                           OnStartWorkout="StartWorkoutAsync" />
+    }
+
+    <MeasurementCard Progress="_dashboard.BodyProgress"
+                     Title="@L10n["Athlete.BodyProgress"]"
+                     WeightLabel="@L10n["Athlete.Weight"]"
+                     BodyFatLabel="@L10n["Athlete.BodyFat"]"
+                     LastMeasuredLabel="@L10n["Athlete.LastMeasured"]" />
+
+    <CoachMessagesCard Message="_dashboard.CoachMessage"
+                       Title="@L10n["Athlete.CoachMessages"]"
+                       UnreadLabel="@L10n["Athlete.Unread"]" />
+
+    <PendingRequestsCard Requests="_dashboard.PendingRequests"
+                       Title="@L10n["Athlete.PendingRequests"]"
+                       PhotoRequestsLabel="@L10n["Athlete.PhotoRequests"]"
+                       MeasurementRequestsLabel="@L10n["Athlete.MeasurementRequests"]"
+                       PendingLabel="@L10n["Athlete.Pending"]"
+                       OnPhotoRequestsClick="GoToPhotos" />
+
+    <ProgressChart Title="@L10n["Athlete.WeightTrend"]" Points="_dashboard.WeightTrend" />
+    <ProgressChart Title="@L10n["Athlete.BodyFatTrend"]" Points="_dashboard.BodyFatTrend" />
+
+    <PreviousProgramsSection Programs="_dashboard.PreviousPrograms"
+                             Title="@L10n["Athlete.PreviousPrograms"]"
+                             CoachLabel="@L10n["Athlete.Coach"]"
+                             CompletedLabel="@L10n["Athlete.Completed"]"
+                             OnProgramSelected="GoToProgram" />
+}
+
+@code {
+    private bool _loading = true;
+    private AthleteDashboardModel? _dashboard;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _dashboard = await Experience.GetDashboardAsync();
+        _loading = false;
+    }
+
+    private async Task StartWorkoutAsync()
+    {
+        if (_dashboard?.ActiveProgram is null)
+        {
+            return;
+        }
+
+        await Experience.StartWorkoutAsync(_dashboard.ActiveProgram.ProgramId, _dashboard.ActiveProgram.CurrentDayId);
+        Navigation.NavigateTo("/athlete/workout");
+    }
+
+    private void GoToPhotos() => Navigation.NavigateTo("/athlete/photos");
+
+    private void GoToProgram(Guid id) => Navigation.NavigateTo($"/athlete/programs/{id}");
+}

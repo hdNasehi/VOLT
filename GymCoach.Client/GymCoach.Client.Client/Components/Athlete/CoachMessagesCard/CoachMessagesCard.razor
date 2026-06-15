@@ -1,0 +1,12 @@
+<VoltCard Title="@Title" CssClass="coach-messages-card" @onclick="HandleClick">
+    <div class="message-preview">
+        <MudText Typo="Typo.body2" Class="message-text">@Message.LastMessage</MudText>
+        <MudText Typo="Typo.caption" Class="sent-at">@Message.SentAt.ToLocalTime().ToString("g")</MudText>
+    </div>
+    @if (Message.UnreadCount > 0)
+    {
+        <MudChip T="string" Size="Size.Small" Color="Color.Primary" Class="unread-chip">
+            @Message.UnreadCount @UnreadLabel
+        </MudChip>
+    }
+</VoltCard>

@@ -1,0 +1,20 @@
+@using GymCoach.Client.Client.Models.Athlete
+
+<div class="workout-day-card @StateClass" @onclick="HandleClick">
+    <div class="day-icon">
+        @if (Day.State == WorkoutDayState.Completed)
+        {
+            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" />
+        }
+        else if (Day.State == WorkoutDayState.Missed)
+        {
+            <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" />
+        }
+        else
+        {
+            <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" />
+        }
+    </div>
+    <MudText Typo="Typo.body1" Class="day-name">@Day.Name</MudText>
+    <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Class="chevron" />
+</div>

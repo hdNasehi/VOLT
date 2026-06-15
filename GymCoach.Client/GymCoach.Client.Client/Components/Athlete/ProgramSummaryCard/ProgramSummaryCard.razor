@@ -1,0 +1,12 @@
+<div class="program-summary-card @StatusClass" @onclick="HandleClick">
+    <div class="card-header">
+        <MudText Typo="Typo.subtitle1">@Program.Name</MudText>
+        <MudChip T="string" Size="Size.Small" Color="@StatusColor">@StatusText</MudChip>
+    </div>
+    <MudText Typo="Typo.body2">@CoachLabel: @Program.CoachName</MudText>
+    <MudText Typo="Typo.caption">@Program.StartDate.ToString("d") — @Program.EndDate.ToString("d")</MudText>
+    <div class="progress-row">
+        <MudProgressLinear Value="@Program.ProgressPercent" Color="Color.Primary" Class="progress-bar" />
+        <MudText Typo="Typo.caption">@Program.ProgressPercent%</MudText>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="previous-programs">
+    <VoltSectionHeader Title="@Title" />
+    @if (Programs.Count == 0)
+    {
+        <VoltEmptyState Title="@EmptyLabel" />
+    }
+    else
+    {
+        @foreach (var program in Programs)
+        {
+            <ProgramSummaryCard Program="program"
+                                CoachLabel="@CoachLabel"
+                                ActiveLabel="@ActiveLabel"
+                                CompletedLabel="@CompletedLabel"
+                                OnSelected="OnProgramSelected" />
+        }
+    }
+</div>
